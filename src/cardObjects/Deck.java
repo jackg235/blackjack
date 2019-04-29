@@ -1,39 +1,70 @@
 package cardObjects;
 
-public interface Deck {
-  //The deck constructor should have no arguments
-    //This object should contain a List<HW8Card>
-    
-    
-    /**
-     * This "resets" the deck to having 52 cards. It should
-     * have for each value, one card of each suit.
-     * Example, it should contain a "2 of Spades", "2 of Hearts"
-     * "2 of Clubs", and "2 of Diamonds", then the same for
-     * 3, 4, 5...,J,Q,K,A.
-     * 
-     * This should NOT shuffle the deck.
-     */
-    public void resetDeck();
-    
-    /**
-     * Randomizes the order of the deck.
-     * Use the static Collections.shuffle(List l) function
-     */
-    public void shuffle();
-    
-    /**
-     * Remove one HW8Card form the deck and return it.
-     * @return the HW8Card that was removed form the deck
-     */
-    public Card drawCard();
-    
-    /**
-     * Return a string representation of how many cards are
-     * in the deck.
-     * Example: "Deck has 52 card(s)"
-     * 
-     * @return a string
-     */
-    public String toString();
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Deck {
+    private String suit;
+    private int numDecks;
+
+    ArrayList<Card> deck = new ArrayList<Card>();
+
+    public Deck(int numDecks) {
+        this.numDecks = numDecks;
+    }
+
+    public void resetDeck() {
+
+        deck.clear();
+        for (int j = 0; j < numDecks; j++) {
+            for (int i = 0; i < 52; i++) {
+
+                if (i < 13) {
+                    suit = "Hearts";
+                } else if (i < 26) {
+                    suit = "Diamonds";
+                } else if (i < 39) {
+                    suit = "Spades";
+                } else if (i < 52) {
+                    suit = "Clubs";
+                }
+
+                if (i % 13 == 0) {
+                    deck.add(new Card("A", suit));
+                } else if (i % 13 == 10) {
+                    deck.add(new Card("J", suit));
+                } else if (i % 13 == 11) {
+                    deck.add(new Card("Q", suit));
+                } else if (i % 13 == 12) {
+                    deck.add(new Card("K", suit));
+                }
+
+                else {
+                    deck.add(new Card(Integer.toString(i % 13 + 1), suit));
+                }
+            }
+        }
+    }
+
+    public void shuffle() {
+        resetDeck();
+        Collections.shuffle(deck);
+    }
+
+    public Card drawCard() {
+
+        if (deck.size() > 0) {
+            Card draw = deck.get(0);
+            deck.remove(0);
+
+            return draw;
+        } else {
+            throw new IllegalStateException("ERROR: deck is empty");
+        }
+    }
+
+    public String toString() {
+        return Integer.toString(deck.size());
+
+    }
 }

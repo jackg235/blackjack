@@ -3,22 +3,38 @@ import java.util.Scanner;
 public class Play {
 
     private static Scanner sc;
+    private static int numTrials = 100;
+    private static int numWins = 0;
+    private static int count = 0;
+    public static int net = 0;
 
     public static void main(String[] args) {
-
+        
         sc = new Scanner(System.in);
+        
+        int numDecks = getNumDecks("How many decks would you like to play with?");
+        while (numDecks == -1) {
+            numDecks = getNumDecks("How many decks would you like to play with?");
+        }
+        
         boolean play = false;
         do {
-            play = playAgain("Would you like to play Blackjack? (y/n)");
+            play = playAgain("");
             if (play) {
-                int numDecks = getNumDecks("How many decks would you like to play with?");
-                while (numDecks == -1) {
-                    numDecks = getNumDecks("How many decks would you like to play with?");
-                }
+                count++;
                 Game game = new Game(numDecks, sc);
-                game.playRound();
+                if (game.playRound()) {
+                    numWins++;
+                }
+                
+                if (count % 10 == 0) {
+                    System.out.println(count);
+                }
             }
         } while (play);
+        
+        System.out.println("You won " + numWins + " games out of " + numTrials + ".");
+        System.out.println("Your net is $" + net);
     }
 
     public static boolean isInt(String in) {
@@ -41,17 +57,7 @@ public class Play {
     }
 
     public static boolean playAgain(String prompt) {
-        while (true) {
-            System.out.println(prompt);
-            String input = sc.next();
-            if (input.toLowerCase().startsWith("y")) {
-
-                return true;
-            } else if (input.toLowerCase().startsWith("n")) {
-                return false;
-            }
-            System.out.println("Invalid entry. Please enter yes or no.");
-        }
+        return count <= numTrials;
     }
 
 }
