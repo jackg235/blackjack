@@ -1,12 +1,15 @@
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Play {
 
     private static Scanner sc;
-    private static int numTrials = 100;
+    private static int numTrials = 1;
     private static int numWins = 0;
+    private static int numGames = 0;
     private static int count = 0;
     public static int net = 0;
+    public static int totalWager = 0;
 
     public static void main(String[] args) {
         
@@ -23,18 +26,21 @@ public class Play {
             if (play) {
                 count++;
                 Game game = new Game(numDecks, sc);
-                if (game.playRound()) {
-                    numWins++;
-                }
-                
+                numWins+= game.playRound();
+                numGames+= game.totalNumberOfGames();
+                net+= game.getWinnings();
+                totalWager += game.getTotalWager();
                 if (count % 10 == 0) {
                     System.out.println(count);
                 }
             }
         } while (play);
         
-        System.out.println("You won " + numWins + " games out of " + numTrials + ".");
+        System.out.println("You won " + numWins + " games out of " + numGames + ".");
         System.out.println("Your net is $" + net);
+        System.out.println("You waged " + totalWager);
+        DecimalFormat df = new DecimalFormat("#.###");
+        System.out.println("Your % return is " + df.format((double) net / (double) totalWager) + "%");
     }
 
     public static boolean isInt(String in) {

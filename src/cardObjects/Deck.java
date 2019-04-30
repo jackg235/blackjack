@@ -17,6 +17,7 @@ public class Deck {
         this.numDecks = numDecks;
         trueCount = 0;
         hardCount = 0;
+        remainingCards = 52 * numDecks;
     }
 
     public void resetDeck() {
@@ -59,6 +60,10 @@ public class Deck {
         resetDeck();
         Collections.shuffle(deck);
     }
+    
+    public int getNumCardsRemaining() {
+        return remainingCards;
+    }
 
     public Card drawCard() {
         
@@ -75,10 +80,8 @@ public class Deck {
                 hardCount+= -1;
             }
             double decks = (double) remainingCards / 52.0;
-            int decksInt = (int) Math.round(decks);
+            int decksInt = (int) Math.round(decks + 0.5);
             trueCount = (double) hardCount / (double) decksInt;
-            
-
             return draw;
         } else {
             throw new IllegalStateException("ERROR: deck is empty");
@@ -93,10 +96,10 @@ public class Deck {
     }
     
     public int getOptimalBet(int unit) {
-        int count = (int) trueCount - 1;
+        int count = (int) Math.round(trueCount);
         int unitsToBet = unit * count;
         if (unitsToBet < 0) {
-            return 0;
+            return 10;
         }
         return unitsToBet;
     }

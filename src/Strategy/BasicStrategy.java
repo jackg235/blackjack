@@ -47,13 +47,13 @@ public class BasicStrategy {
         charts = charts.replaceAll("QH", "H");
         charts = charts.replaceAll("QS", "S");
         charts = charts.replaceAll("QD", "DH");
-        
+
         int counter = 0;
-        String[] flat = new String[12 * 36]; 
+        String[] flat = new String[12 * 36];
         String[] split = charts.split("// 2     3     4     5     6     7     8     9     T     A    ET    EA");
-        
+
         String splitSection = "";
-        
+
         if (numDecks == 1) {
             if (standValue <= 17) {
                 splitSection = split[1];
@@ -85,18 +85,15 @@ public class BasicStrategy {
                     counter++;
                 }
             }
-        } 
-        
+        }
+
         counter = 0;
         for (int i = 0; i < strategies.length; i++) {
             for (int j = 0; j < strategies[0].length; j++) {
                 strategies[i][j] = flat[counter];
-                //System.out.print(strategies[i][j] + "    ");
                 counter++;
             }
-            //System.out.println();
         }
-        
         return strategies;
     }
 }
