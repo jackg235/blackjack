@@ -6,16 +6,25 @@ import java.util.Collections;
 public class Deck {
     private String suit;
     private int numDecks;
+    
+    private double trueCount;
+    private int hardCount;
+    private int remainingCards;
 
     ArrayList<Card> deck = new ArrayList<Card>();
 
     public Deck(int numDecks) {
         this.numDecks = numDecks;
+        trueCount = 0;
+        hardCount = 0;
     }
 
     public void resetDeck() {
 
         deck.clear();
+        trueCount = 0;
+        hardCount = 0;
+        
         for (int j = 0; j < numDecks; j++) {
             for (int i = 0; i < 52; i++) {
 
@@ -52,19 +61,47 @@ public class Deck {
     }
 
     public Card drawCard() {
-
+        
+        remainingCards--;
+        
         if (deck.size() > 0) {
             Card draw = deck.get(0);
             deck.remove(0);
+            int val = draw.getBlackjackScore();
+            if (val >= 2 && val <= 6) {
+                hardCount++;
+            }
+            if (val == 1 || val == 10) {
+                hardCount+= -1;
+            }
+            double decks = (double) remainingCards / 52.0;
+            int decksInt = (int) Math.round(decks);
+            trueCount = (double) hardCount / (double) decksInt;
+            
 
             return draw;
         } else {
             throw new IllegalStateException("ERROR: deck is empty");
         }
     }
+    public double getTrueCount() {
+        return this.trueCount;
+    }
+    
+    public int getHardCount() {
+        return this.hardCount;
+    }
+    
+    public int getOptimalBet(int unit) {
+        int count = (int) trueCount - 1;
+        int unitsToBet = unit * count;
+        if (unitsToBet < 0) {
+            return 0;
+        }
+        return unitsToBet;
+    }
 
     public String toString() {
         return Integer.toString(deck.size());
-
     }
 }

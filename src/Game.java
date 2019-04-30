@@ -19,7 +19,7 @@ public class Game {
     }
 
     public boolean playRound() {
-        int bet = 10;
+        int bet = 50;
         Deck deck = new Deck(numDecks);
         deck.shuffle();
 
@@ -59,6 +59,7 @@ public class Game {
         
 
         while (continuePlaying("Press 'y' to continue.")) {
+            bet = deck.getOptimalBet(10);
                                     
             if (move.equals("H")) {  
                 
