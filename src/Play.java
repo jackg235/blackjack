@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import cardObjects.Deck;
@@ -5,7 +6,7 @@ import cardObjects.Deck;
 public class Play {
 
     private static Scanner sc;
-    private static int numTrials = 50;
+    private static int numTrials = 10000;
     static int numWins = 0;
     static int numTies = 0;
     static int count = 0;
@@ -33,11 +34,19 @@ public class Play {
                 if (game.playRound(deck)) {
                     numWins++;
                 }
+                if (game.splitWonLost()) {
+                    numWins++;
+                }
             }
         }
-   
+        DecimalFormat df = new DecimalFormat("##.##");
         System.out.println("You won " + numWins + " hands out of " + count + " with " + numTies + " ties.");
-        System.out.println("Your net is $" + net);
+        double percentWon = (double) numWins / (double) count;
+        System.out.println("Your won " + df.format(percentWon * 100) + "% of games played");
+        double percentGainedOrLost = (((double)game.getTotalWager() + (double)net) - (double)game.getTotalWager()) / (double) game.getTotalWager();
+        
+        System.out.println("You went " + df.format(percentGainedOrLost * 100) + "% this game" + 
+        ", waging $" + game.getTotalWager() + " and finishing $" + net);
     }
 
     public static boolean isInt(String in) {
