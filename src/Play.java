@@ -6,7 +6,7 @@ import cardObjects.Deck;
 public class Play {
 
     private static Scanner sc;
-    private static int numTrials = 10000;
+    private static int numTrials = 1000;
     static int numWins = 0;
     static int numTies = 0;
     static int count = 0;
@@ -27,6 +27,7 @@ public class Play {
             Deck deck = new Deck(numDecks);
             deck.resetDeck();
             deck.shuffle();
+            
             while (deck.deckSize() > 10) {
                 System.out.println(deck.deckSize());
                 System.out.println();
